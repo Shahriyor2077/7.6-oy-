@@ -11,6 +11,7 @@ interface UserLIst {
 export const useSearch = (str: string = "") => {
   return useQuery({
     queryKey: ["search_item", str],
+    enabled: !!str,
     queryFn: () =>
       request
         .get<UserLIst[]>("/users", {

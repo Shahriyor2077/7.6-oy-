@@ -10,21 +10,21 @@ interface UserLIst {
 
 export const useGetUserList = (page: number = 1, limit: number = 3) => {
   return useQuery({
-    queryKey: ["user_list", page],
+    queryKey: ["user_list"],
     queryFn: () =>
       request
-        .get<UserLIst[]>("/users", {
-          params: {
-            _limit: limit,
-            _page: page,
-          },
-        })
-        .then((res): { data: UserLIst[]; pageSize: number } => {
-          //@ts-ignore
-          let allItems = res.headers.get("X-Total-count");
-          const pageSize = Math.ceil(Number(allItems) / limit);
+        .get<UserLIst[]>("/users")
+        .then((res): { data: UserLIst[]; pageSize: number; allData: UserLIst[] } => {
+          const allData = res.data;
+          const totalCount = allData.length;
+          const pageSize = Math.ceil(totalCount / limit);
 
-          return { data: res.data, pageSize };
+          // Frontend pagination
+          const startIndex = (page - 1) * limit;
+          const endIndex = startIndex + limit;
+          const paginatedData = allData.slice(startIndex, endIndex);
+
+          return { data: paginatedData, pageSize, allData };
         }),
   });
 };

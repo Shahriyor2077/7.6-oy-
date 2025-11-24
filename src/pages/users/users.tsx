@@ -27,7 +27,7 @@ export const Users = () => {
       ) : (
         <>
           {data?.pages.map((page) =>
-            page.map((item) => <Card key={item.id} {...item} />)
+            page.data.map((item) => <Card key={item.id} {...item} />)
           )}
         </>
       )}

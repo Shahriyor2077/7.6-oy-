@@ -10,7 +10,7 @@ interface UserLIst {
 
 export const Card = ({ email, name, username, id }: UserLIst) => {
 
-  
+
   return (
     <div className="border rounded-2xl p-8 my-5 border-blue-400">
       <h2 className="text-4xl hover:text-blue-400">

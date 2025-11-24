@@ -20,9 +20,13 @@ export const useItems = () => {
             _limit: 3,
           },
         })
-        .then((res) => res.data),
-    getNextPageParam: (_lastPage, allPage, lastPageParam) => {
-      return lastPageParam < 5 ? allPage.length + 1 : null;
+        .then((res) => {
+          const totalCount = Number(res.headers['x-total-count']);
+          const totalPages = Math.ceil(totalCount / 3);
+          return { data: res.data, totalPages };
+        }),
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
+      return lastPageParam < lastPage.totalPages ? lastPageParam + 1 : null;
     },
   });
 };
